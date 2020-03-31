@@ -2,10 +2,7 @@ module.exports = {
   env: {
     es6: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
+  extends: ['plugin:react/recommended', 'airbnb', 'prettier', 'prettier/react'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -18,11 +15,13 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-  ],
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
-    "react/jsx-filename-extension": ["error", { extensions: [".ts", ".tsx"] }],
+    "import/no-unresolved": "off",
+    "import/extensions": "off", 
+    "@typescript-eslint/explicit-function-return-type": "off",
+    'prettier/prettier': 'error',
+    'react/jsx-filename-extension': ['error', { extensions: ['.ts', '.tsx'] }],
+    "import/prefer-default-export": "off",
   },
 };
