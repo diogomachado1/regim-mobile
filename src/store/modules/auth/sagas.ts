@@ -2,6 +2,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 // //  import { toast } from 'react-toastify';
 
 //  import history from '~/services/history';
+import { Alert } from 'react-native';
 import { openApi, closeApi } from '../../../services/api';
 
 import {
@@ -35,6 +36,8 @@ export function* signIn({ payload }) {
 
     // //  history.push('/');
   } catch (err) {
+    Alert.alert('Erro', 'Verifique seus dados');
+
     // // toast.error('Falha na autenticação, verifique seus dados');
     yield put(signFailure());
   }
@@ -53,7 +56,7 @@ export function* signUp({ payload }) {
 
     // //  history.push('/');
   } catch (err) {
-    // // toast.error('Falha no cadastro, verifique seus dados!');
+    Alert.alert('Falha na Criação', err.response.data.message);
 
     yield put(signFailure());
   }

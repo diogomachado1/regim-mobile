@@ -1,19 +1,24 @@
 import React, { useRef } from 'react';
-import { Button, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { Form } from '@unform/core';
-import { Text } from '@ui-kitten/components';
+import { Text, Button } from '@ui-kitten/components';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import Input from '../../Components/Input';
+import Input from '../../Components/Input/NativeInput';
 import { SingInForm } from './styles';
-import SingInValidator from '../../Validator/SingInValidator';
+import { signUpRequest } from '../../store/modules/auth/actions';
+import SubmitButton from '../../Components/Button/SubmitButton';
+import SingUpValidator from '../../Validator/SingUpValidator';
 
 export default function SingUp() {
   const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+
   const formRef = useRef(null);
-  async function handleSubmit(data) {
-    console.log(data);
-    // { email: 'test@example.com', password: '123456' }
+  async function handleSubmit({ name, email, password }) {
+    dispatch(signUpRequest(name, email, password));
   }
   return (
     <SingInForm
@@ -25,10 +30,11 @@ export default function SingUp() {
       <Form
         ref={formRef}
         onSubmit={(data) =>
-          SingInValidator.validate(formRef, data, handleSubmit)
+          SingUpValidator.validate(formRef, data, handleSubmit)
         }
       >
         <Text>Cadastrar</Text>
+        <Input label="Nome" name="name" autoCapitalize="words" />
         <Input label="Email" name="email" autoCapitalize="none" />
         <Input
           label="Senha"
@@ -36,11 +42,20 @@ export default function SingUp() {
           secureTextEntry
           autoCapitalize="none"
         />
-        <Button title="Sign in" onPress={() => formRef.current.submitForm()} />
-        <Button
-          title="Já tenho uma conta"
-          onPress={() => navigation.navigate('singin')}
+        <SubmitButton
+          styleView={{ marginTop: 30 }}
+          label="Criar Conta"
+          loading={loading}
+          onPress={() => formRef.current.submitForm()}
         />
+        <Button
+          appearance="ghost"
+          size="large"
+          style={{ marginTop: 10 }}
+          onPress={() => navigation.navigate('singin')}
+        >
+          Já tenho uma conta
+        </Button>
       </Form>
     </SingInForm>
   );

@@ -7,4 +7,5 @@ export const SingInForm = styled.KeyboardAvoidingView`
   width: 100%;
   max-width: 400px;
   padding: 20px;
+  flex: 1;
 `;

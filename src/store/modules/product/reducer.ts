@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import produce from 'immer';
 
 const INITIAL_STATE = {
@@ -8,10 +9,11 @@ const INITIAL_STATE = {
   publicProducts: [],
   count: 0,
   countPublic: 0,
+  page: 1,
 };
 
 export default function product(state = INITIAL_STATE, action) {
-  return produce(state, draft => {
+  return produce(state, (draft) => {
     switch (action.type) {
       case '@product/SAVE_IN_SUCCESS': {
         draft.loading = false;
@@ -20,8 +22,16 @@ export default function product(state = INITIAL_STATE, action) {
       }
       case '@product/GET_IN_SUCCESS': {
         draft.loading = false;
-        draft.products = action.payload.data.rows;
+        draft.page = 1;
         draft.count = action.payload.data.count;
+        draft.products = action.payload.data.rows;
+        break;
+      }
+      case '@product/GET_NEXT_SUCCESS': {
+        draft.loading = false;
+        draft.page += 1;
+        draft.count = action.payload.data.count;
+        draft.products = draft.products.concat(action.payload.data.rows);
         break;
       }
       case '@product/GET_PUBLIC_IN_SUCCESS': {
@@ -37,6 +47,7 @@ export default function product(state = INITIAL_STATE, action) {
       }
       case '@product/SAVE_IN_RESQUEST':
       case '@product/GET_IN_RESQUEST':
+      case '@product/GET_NEXT_RESQUEST':
       case '@product/GET_IN_RESQUEST_DEBOUNCE':
       case '@product/GET_PUBLIC_IN_RESQUEST':
       case '@product/GETONE_IN_RESQUEST':
@@ -47,6 +58,7 @@ export default function product(state = INITIAL_STATE, action) {
       }
       case '@product/SAVE_IN_FAILURE':
       case '@product/GET_IN_FAILURE':
+      case '@product/GET_NEXT_FAILURE':
       case '@product/GET_PUBLIC_IN_FAILURE':
       case '@product/GETONE_IN_FAILURE':
       case '@product/DUPLICATE_IN_SUCCESS':

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { myTheme } from '../../Theme/custom-theme';
+import { myTheme } from '../../../Theme/custom-theme';
 
 export const ErrorMessage = styled.Text`
   color: ${myTheme['color-danger-500']};

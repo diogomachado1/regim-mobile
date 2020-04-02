@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
-import { Button, Platform, Text } from 'react-native';
+import { Platform, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form } from '@unform/core';
 import { useNavigation } from '@react-navigation/native';
-import Input from '../../Components/Input';
+import { Button } from '@ui-kitten/components';
 import { SingInForm } from './styles';
 import SingInValidator from '../../Validator/SingInValidator';
 import { signInRequest } from '../../store/modules/auth/actions';
+import Input from '../../Components/Input/index';
+import SubmitButton from '../../Components/Button/SubmitButton';
 
 export default function SignIn() {
   const navigation = useNavigation();
@@ -37,11 +39,20 @@ export default function SignIn() {
           autoCapitalize="none"
         />
         <Text>{loading}</Text>
-        <Button title="Sign in" onPress={() => formRef.current.submitForm()} />
-        <Button
-          title="Criar uma conta"
-          onPress={() => navigation.navigate('singup')}
+        <SubmitButton
+          label="Acessar"
+          loading={loading}
+          styleView={{ marginTop: 30 }}
+          onPress={() => formRef.current.submitForm()}
         />
+        <Button
+          style={{ marginTop: 10 }}
+          size="large"
+          appearance="ghost"
+          onPress={() => navigation.navigate('singup')}
+        >
+          Criar uma conta
+        </Button>
       </Form>
     </SingInForm>
   );
